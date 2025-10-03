@@ -1,8 +1,18 @@
+import inspect
 from typing import *
 
-__all__ = ["main"]
+import setdoc
+
+__all__ = ["SetSig"]
 
 
-def main(args: Optional[Iterable] = None) -> None:
-    "This function prints 'Hello World!'."
-    print("Hello World!")
+class SetSig:
+
+    @setdoc.basic
+    def __call__(self: Self, target: Any) -> Any:
+        target.__signature__ = self.value
+        return target
+
+    @setdoc.basic
+    def __init__(self: Self, callable: Callable) -> None:
+        self.value = inspect.signature(callable)
